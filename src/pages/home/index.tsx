@@ -1,5 +1,7 @@
+import { Navigate } from 'react-router';
+
 const HomePage = () => {
-  return <div>Sup</div>;
+  return <Navigate to="/library" />;
 };
 
 export default HomePage;
