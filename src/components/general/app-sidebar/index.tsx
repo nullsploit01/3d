@@ -1,4 +1,4 @@
-import { Loader } from 'lucide-react';
+import { Expand } from 'lucide-react';
 
 import {
   Sidebar,
@@ -17,7 +17,7 @@ const menuItems = [
   {
     title: 'Loading Screen',
     url: '/library/loading',
-    icon: Loader,
+    icon: Expand,
   },
 ];
 
