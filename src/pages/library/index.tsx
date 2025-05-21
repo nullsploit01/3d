@@ -1,11 +1,17 @@
 import { Outlet } from 'react-router';
 
+import { AppSidebar } from '@/components/general/app-sidebar';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+
 const Library = () => {
   return (
-    <div>
-      Library
-      <Outlet />
-    </div>
+    <SidebarProvider>
+      <AppSidebar />
+      <main>
+        <SidebarTrigger />
+        <Outlet />
+      </main>
+    </SidebarProvider>
   );
 };
 

@@ -1,3 +1,4 @@
+import './globals.css';
 import { router } from './lib/router';
 import { RouterProvider } from 'react-router';
 
