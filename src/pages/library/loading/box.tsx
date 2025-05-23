@@ -1,7 +1,6 @@
-// Box.tsx
 import { useFrame } from '@react-three/fiber';
 import { useRef } from 'react';
-import type { Mesh } from 'three';
+import type { Mesh, MeshStandardMaterial } from 'three';
 
 import { useGuiControls } from '@/hooks/use-gui-controls';
 
@@ -15,15 +14,16 @@ export function Box() {
   ]);
 
   useFrame(() => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y += params.speed;
-    }
+    if (!meshRef.current) return;
+    meshRef.current.rotation.y += params.speed;
+    (meshRef.current.material as MeshStandardMaterial).color.set(params.color);
   });
 
   return (
     <mesh ref={meshRef}>
       <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial />
+      <meshStandardMaterial needsUpdate />
+      <ambientLight intensity={1} />
     </mesh>
   );
 }
