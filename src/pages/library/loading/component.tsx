@@ -4,7 +4,7 @@ import type { Mesh, MeshStandardMaterial } from 'three';
 
 import { useGuiControls } from '@/hooks/use-gui-controls';
 
-export function Box() {
+const LoadingComponent = () => {
   const meshRef = useRef<Mesh>(null);
   const params = useRef({ speed: 0.01, color: '#8AC8AC' }).current;
 
@@ -22,8 +22,10 @@ export function Box() {
   return (
     <mesh ref={meshRef}>
       <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial needsUpdate />
+      <meshStandardMaterial />
       <ambientLight intensity={1} />
     </mesh>
   );
-}
+};
+
+export default LoadingComponent;

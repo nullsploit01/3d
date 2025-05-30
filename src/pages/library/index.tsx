@@ -5,9 +5,9 @@ import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 
 const Library = () => {
   return (
-    <SidebarProvider>
+    <SidebarProvider className="max-h-screen">
       <AppSidebar />
-      <main>
+      <main className="flex-1 flex flex-col overflow-hidden">
         <SidebarTrigger />
         <Outlet />
       </main>

@@ -1,13 +1,13 @@
-import { Box } from './box';
+import LoadingComponent from './component';
 
 import CanvasWrapper from '@/components/general/canvas-wrapper';
 
 const Loading = () => {
   return (
-    <div className="w-full flex justify-center ml-5 mt-5">
-      <div className="w-[800px] h-[450px]">
+    <div className="w-full grid grid-cols-2 p-8 max-h-full flex-1 overflow-hidden">
+      <div className="col-span-2 h-full">
         <CanvasWrapper>
-          <Box />
+          <LoadingComponent />
         </CanvasWrapper>
       </div>
     </div>
