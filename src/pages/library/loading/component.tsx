@@ -25,7 +25,7 @@ const LoadingComponent = () => {
 
   return (
     <mesh ref={meshRef}>
-      <planeGeometry args={[1, 1]} />
+      <boxGeometry args={[1, 1, 1, 20, 20, 20]} />
       <shaderMaterial
         fragmentShader={fragmentShader}
         vertexShader={vertexShader}
