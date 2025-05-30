@@ -2,7 +2,7 @@ import fragmentShader from './shaders/fragment.glsl';
 import vertexShader from './shaders/vertex.glsl';
 import { useFrame } from '@react-three/fiber';
 import { useRef } from 'react';
-import { DoubleSide, type Mesh } from 'three';
+import { DoubleSide, type Mesh, ShaderMaterial, Uniform } from 'three';
 
 import { useGuiControls } from '@/hooks/use-gui-controls';
 
@@ -14,9 +14,13 @@ const LoadingComponent = () => {
     { property: 'speed', type: 'number', options: { min: 0, max: 0.2, step: 0.001 } },
   ]);
 
-  useFrame(() => {
+  useFrame((_, delta) => {
     if (!meshRef.current) return;
     meshRef.current.rotation.y += params.speed;
+    const material = meshRef.current.material as ShaderMaterial;
+    if (material.uniforms?.uTime) {
+      material.uniforms.uTime.value += delta;
+    }
   });
 
   return (
@@ -26,6 +30,7 @@ const LoadingComponent = () => {
         fragmentShader={fragmentShader}
         vertexShader={vertexShader}
         side={DoubleSide}
+        uniforms={{ uTime: new Uniform(0) }}
       />
       <ambientLight intensity={2} />
     </mesh>
