@@ -25,11 +25,14 @@ const LoadingComponent = () => {
 
   return (
     <mesh ref={meshRef}>
-      <boxGeometry args={[1, 1, 1, 20, 20, 20]} />
+      <torusKnotGeometry args={[10, 3, 100, 16]} />
       <shaderMaterial
         fragmentShader={fragmentShader}
         vertexShader={vertexShader}
         side={DoubleSide}
+        transparent={true}
+        depthWrite={false}
+        wireframe
         uniforms={{ uTime: new Uniform(0) }}
       />
       <ambientLight intensity={2} />
