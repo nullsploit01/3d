@@ -24,15 +24,14 @@ const LoadingComponent = () => {
   });
 
   return (
-    <mesh ref={meshRef}>
-      <torusKnotGeometry args={[10, 3, 100, 16]} />
+    <mesh ref={meshRef} rotation-z={Math.PI / 2}>
+      <ringGeometry args={[10, 20, 100]} />
       <shaderMaterial
         fragmentShader={fragmentShader}
         vertexShader={vertexShader}
         side={DoubleSide}
         transparent={true}
         depthWrite={false}
-        wireframe
         uniforms={{ uTime: new Uniform(0) }}
       />
       <ambientLight intensity={2} />
