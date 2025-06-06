@@ -24,8 +24,8 @@ const LoadingComponent = () => {
   });
 
   return (
-    <mesh ref={meshRef} rotation-z={Math.PI / 2}>
-      <ringGeometry args={[10, 20, 100]} />
+    <mesh ref={meshRef} position={[0, -10, 0]} rotation-z={Math.PI / 2}>
+      <points />
       <shaderMaterial
         fragmentShader={fragmentShader}
         vertexShader={vertexShader}
