@@ -5,7 +5,7 @@ import { RouterProvider } from 'react-router';
 
 const App = () => {
   return (
-    <NextThemesProvider attribute="class" defaultTheme="system">
+    <NextThemesProvider attribute="class" defaultTheme="dark">
       <RouterProvider router={router} />
     </NextThemesProvider>
   );
