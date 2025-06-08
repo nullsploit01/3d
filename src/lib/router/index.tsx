@@ -1,9 +1,11 @@
+import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router';
 
 import HomePage from '@/pages/home';
 import Library from '@/pages/library';
 import LibraryHome from '@/pages/library/home';
-import LightShader from '@/pages/library/light-shader';
+
+const LightShader = lazy(() => import('@/pages/library/light-shader'));
 
 export const router = createBrowserRouter([
   {

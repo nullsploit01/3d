@@ -3,7 +3,7 @@ import vertexShader from './shaders/vertex.glsl';
 import { useGLTF } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useRef } from 'react';
-import { Color, DoubleSide, Mesh, ShaderMaterial, Uniform, Vector3 } from 'three';
+import { Color, DoubleSide, Material, Mesh, ShaderMaterial, Uniform, Vector3 } from 'three';
 
 import { useGuiControls } from '@/hooks/use-gui-controls';
 
@@ -12,8 +12,16 @@ const LightShaderComponent = () => {
     speed: 0.2,
     lightColor: '#FF8C00',
     lightPosition: new Vector3(0, 2.5, 0),
+    lightIntensity: 1,
+    objectColor: '#F0F0F0',
   }).current;
-  useGuiControls('Box Controls', params, [{ property: 'lightColor', type: 'color' }]);
+  useGuiControls('Box Controls', params, [
+    { property: 'lightColor', type: 'color' },
+    { property: 'objectColor', type: 'color' },
+    { property: 'speed', type: 'number', options: { min: 0, max: 10, step: 0.01 } },
+    { property: 'lightIntensity', type: 'number', options: { min: 0, max: 10, step: 0.01 } },
+  ]);
+
   const { viewport } = useThree();
 
   const torusKnotGeometryRef = useRef<Mesh>(null);
@@ -26,8 +34,10 @@ const LightShaderComponent = () => {
 
   const lightShaderMaterial = new ShaderMaterial({
     uniforms: {
+      uLightIntensity: new Uniform(params.lightIntensity),
       uLightColor: new Uniform(new Color(params.lightColor)),
       uLightPosition: new Uniform(params.lightPosition),
+      uObjectColor: new Uniform(new Color(params.objectColor)),
     },
     side: DoubleSide,
     fragmentShader,
@@ -37,6 +47,14 @@ const LightShaderComponent = () => {
   useFrame(({ pointer, clock }) => {
     if (lightShaderMaterial.uniforms.uLightColor) {
       lightShaderMaterial.uniforms.uLightColor.value = new Color(params.lightColor);
+    }
+
+    if (lightShaderMaterial.uniforms.uLightIntensity) {
+      lightShaderMaterial.uniforms.uLightIntensity.value = params.lightIntensity;
+    }
+
+    if (lightShaderMaterial.uniforms.uObjectColor) {
+      lightShaderMaterial.uniforms.uObjectColor.value = new Color(params.objectColor);
     }
 
     if (torusKnotGeometryRef.current) {
