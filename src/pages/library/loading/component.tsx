@@ -1,16 +1,17 @@
 import fragmentShader from './shaders/fragment.glsl';
 import vertexShader from './shaders/vertex.glsl';
-import { shaderMaterial, useGLTF } from '@react-three/drei';
+import { useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { useRef } from 'react';
-import { Color, DoubleSide, type Mesh, ShaderMaterial, Uniform } from 'three';
+import { Color, DoubleSide, ShaderMaterial, Uniform } from 'three';
 
 import { useGuiControls } from '@/hooks/use-gui-controls';
 
 const LoadingComponent = () => {
-  const params = useRef({ speed: 0, lightColor: '#ffffff' }).current;
+  const params = useRef({ speed: 0, lightColor: '#FF8C00' }).current;
+  useGuiControls('Box Controls', params, [{ property: 'lightColor', type: 'color' }]);
 
-  const gltf = useGLTF(
+  const lightModel = useGLTF(
     '/models/lights/modern_ceiling_lamp_01_2k.gltf/modern_ceiling_lamp_01_2k.gltf',
   );
 
@@ -27,14 +28,23 @@ const LoadingComponent = () => {
     if (lightShaderMaterial.uniforms.uLightColor) {
       lightShaderMaterial.uniforms.uLightColor.value = new Color(params.lightColor);
     }
-  });
 
-  useGuiControls('Box Controls', params, [{ property: 'lightColor', type: 'color' }]);
+    if (lightModel.scene) {
+      lightModel.scene.traverse((child: any) => {
+        if (child.isMesh) {
+          const mesh = child;
+          if (mesh.material && 'color' in mesh.material) {
+            mesh.material.color = new Color(params.lightColor);
+          }
+        }
+      });
+    }
+  });
 
   return (
     <>
       <mesh position={[0, 2.5, 0]}>
-        <primitive object={gltf.scene} scale={2.5} />
+        <primitive object={lightModel.scene} scale={2.5} />
         <ambientLight intensity={1} />
       </mesh>
       <group>
