@@ -3,7 +3,7 @@ import vertexShader from './shaders/vertex.glsl';
 import { useGLTF } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useRef } from 'react';
-import { Color, DoubleSide, Material, Mesh, ShaderMaterial, Uniform, Vector3 } from 'three';
+import { Color, DoubleSide, Mesh, ShaderMaterial, Uniform, Vector3 } from 'three';
 
 import { useGuiControls } from '@/hooks/use-gui-controls';
 
@@ -15,6 +15,7 @@ const LightShaderComponent = () => {
     lightIntensity: 1,
     objectColor: '#F0F0F0',
   }).current;
+
   useGuiControls('Box Controls', params, [
     { property: 'lightColor', type: 'color' },
     { property: 'objectColor', type: 'color' },
