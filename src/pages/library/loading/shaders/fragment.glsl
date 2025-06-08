@@ -1,4 +1,5 @@
 uniform vec3 uLightColor;
+uniform vec3 uLightPosition;
 
 varying vec3 vNormal;
 varying vec3 vPosition;
@@ -17,7 +18,7 @@ void main() {
                 vec3(1.0, 1.0, 1.0), 
                 1.0, 
                 normal, 
-                vec3(0.0, 2.5, 0.0),
+                uLightPosition,
                 viewPosition,
                 20.0,
                 vPosition,

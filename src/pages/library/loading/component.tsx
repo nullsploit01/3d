@@ -1,15 +1,24 @@
 import fragmentShader from './shaders/fragment.glsl';
 import vertexShader from './shaders/vertex.glsl';
 import { useGLTF } from '@react-three/drei';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import { useRef } from 'react';
-import { Color, DoubleSide, ShaderMaterial, Uniform } from 'three';
+import { Color, DoubleSide, Mesh, ShaderMaterial, Uniform, Vector3 } from 'three';
 
 import { useGuiControls } from '@/hooks/use-gui-controls';
 
 const LoadingComponent = () => {
-  const params = useRef({ speed: 0, lightColor: '#FF8C00' }).current;
+  const params = useRef({
+    speed: 0.2,
+    lightColor: '#FF8C00',
+    lightPosition: new Vector3(0, 2.5, 0),
+  }).current;
   useGuiControls('Box Controls', params, [{ property: 'lightColor', type: 'color' }]);
+  const { viewport } = useThree();
+
+  const torusKnotGeometryRef = useRef<Mesh>(null);
+  const icosahedronGeometryRef = useRef<Mesh>(null);
+  const tetrahedronGeometryRef = useRef<Mesh>(null);
 
   const lightModel = useGLTF(
     '/models/lights/modern_ceiling_lamp_01_2k.gltf/modern_ceiling_lamp_01_2k.gltf',
@@ -18,27 +27,42 @@ const LoadingComponent = () => {
   const lightShaderMaterial = new ShaderMaterial({
     uniforms: {
       uLightColor: new Uniform(new Color(params.lightColor)),
+      uLightPosition: new Uniform(params.lightPosition),
     },
     side: DoubleSide,
     fragmentShader,
     vertexShader,
   });
 
-  useFrame((state) => {
+  useFrame(({ pointer, clock }) => {
     if (lightShaderMaterial.uniforms.uLightColor) {
       lightShaderMaterial.uniforms.uLightColor.value = new Color(params.lightColor);
+    }
+
+    if (torusKnotGeometryRef.current) {
+      torusKnotGeometryRef.current.rotation.y = clock.getElapsedTime() * params.speed;
+    }
+
+    if (icosahedronGeometryRef.current) {
+      icosahedronGeometryRef.current.rotation.x = clock.getElapsedTime() * params.speed;
+    }
+
+    if (tetrahedronGeometryRef.current) {
+      tetrahedronGeometryRef.current.rotation.z = clock.getElapsedTime() * params.speed;
     }
 
     if (lightModel.scene) {
       lightModel.scene.traverse((child: any) => {
         if (child.isMesh) {
-          const t = state.clock.getElapsedTime();
           const mesh = child;
           if (mesh.material && 'color' in mesh.material) {
             mesh.material.color = new Color(params.lightColor);
-            mesh.position.x = Math.sin(t) * 0.3;
-            mesh.position.y = Math.cos(t) * 0.3;
-            // mesh.position.z = Math.tan(t) * 0.3;
+            const x = (pointer.x * viewport.width) / 2;
+            const y = (pointer.y * viewport.height) / 2;
+            mesh.position.x = (x % viewport.width) * 0.2;
+            mesh.position.z = (y % viewport.height) * 0.2;
+
+            params.lightPosition.set(mesh.position.x, mesh.position.y, mesh.position.z);
           }
         }
       });
@@ -47,19 +71,19 @@ const LoadingComponent = () => {
 
   return (
     <>
-      <mesh position={[0, 2.5, 0]}>
+      <mesh position={params.lightPosition}>
         <primitive object={lightModel.scene} scale={2.5} />
         <ambientLight intensity={1} />
       </mesh>
       <group>
-        <mesh position={[3, 0, 0]} material={lightShaderMaterial}>
+        <mesh ref={icosahedronGeometryRef} position={[3, 0, 0]} material={lightShaderMaterial}>
+          <icosahedronGeometry args={[1, 0]} />
+        </mesh>
+        <mesh ref={torusKnotGeometryRef} position={[0, 0, 0]} material={lightShaderMaterial}>
           <torusKnotGeometry args={[0.6, 0.25, 128, 32]} />
         </mesh>
-        <mesh position={[0, 0, 0]} material={lightShaderMaterial}>
-          <torusKnotGeometry args={[0.6, 0.25, 128, 32]} />
-        </mesh>
-        <mesh position={[-3, 0, 0]} material={lightShaderMaterial}>
-          <torusKnotGeometry args={[0.6, 0.25, 128, 32]} />
+        <mesh ref={tetrahedronGeometryRef} position={[-3, 0, 0]} material={lightShaderMaterial}>
+          <tetrahedronGeometry args={[1, 0]} />
         </mesh>
       </group>
     </>
