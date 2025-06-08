@@ -1,17 +1,17 @@
-import LoadingComponent from './component';
+import LightShaderComponent from './component';
 
 import CanvasWrapper from '@/components/general/canvas-wrapper';
 
-const Loading = () => {
+const LightShader = () => {
   return (
     <div className="w-full grid grid-cols-2 p-8 max-h-full flex-1 overflow-hidden">
       <div className="col-span-2 h-full">
         <CanvasWrapper>
-          <LoadingComponent />
+          <LightShaderComponent />
         </CanvasWrapper>
       </div>
     </div>
   );
 };
 
-export default Loading;
+export default LightShader;

@@ -15,8 +15,8 @@ import {
 
 const menuItems = [
   {
-    title: 'Loading Screen',
-    url: '/library/loading',
+    title: 'Light Shaders',
+    url: '/library/light-shaders',
     icon: Expand,
   },
 ];

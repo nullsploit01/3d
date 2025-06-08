@@ -3,7 +3,7 @@ import { createBrowserRouter } from 'react-router';
 import HomePage from '@/pages/home';
 import Library from '@/pages/library';
 import LibraryHome from '@/pages/library/home';
-import Loading from '@/pages/library/loading';
+import LightShader from '@/pages/library/light-shader';
 
 export const router = createBrowserRouter([
   {
@@ -19,8 +19,8 @@ export const router = createBrowserRouter([
         element: <LibraryHome />,
       },
       {
-        path: 'loading',
-        element: <Loading />,
+        path: 'light-shaders',
+        element: <LightShader />,
       },
     ],
   },

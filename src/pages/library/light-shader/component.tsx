@@ -7,7 +7,7 @@ import { Color, DoubleSide, Mesh, ShaderMaterial, Uniform, Vector3 } from 'three
 
 import { useGuiControls } from '@/hooks/use-gui-controls';
 
-const LoadingComponent = () => {
+const LightShaderComponent = () => {
   const params = useRef({
     speed: 0.2,
     lightColor: '#FF8C00',
@@ -90,4 +90,4 @@ const LoadingComponent = () => {
   );
 };
 
-export default LoadingComponent;
+export default LightShaderComponent;
