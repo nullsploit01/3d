@@ -1,22 +1,20 @@
-uniform vec3 uColor;
+uniform vec3 uLightColor;
 
 varying vec3 vNormal;
 varying vec3 vPosition;
 
-#include ./includes/ambientLight.glsl
 #include ./includes/pointLight.glsl
 
 void main() {
     vec3 normal = normalize(vNormal);
     vec3 viewPosition = normalize(vPosition - cameraPosition);
-    vec3 color = uColor;
+    vec3 color = uLightColor;
 
     vec3 light = vec3(0.0);
 
-    // light += ambientLight(vec3(1.0), 0.02);
 
     light += pointLight(
-                vec3(1.0, 0.1, 0.1), 
+                vec3(1.0, 1.0, 1.0), 
                 1.0, 
                 normal, 
                 vec3(0.0, 2.5, 0.0),
