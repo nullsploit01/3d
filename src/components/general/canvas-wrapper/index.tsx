@@ -46,7 +46,7 @@ const CanvasWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           dpr={Math.min(window.devicePixelRatio, 2)}
         >
           {children}
-          <OrbitControls enableDamping />
+          <OrbitControls enableDamping maxDistance={15} minDistance={2} />
         </Canvas>
       </div>
     </GuiContext.Provider>
