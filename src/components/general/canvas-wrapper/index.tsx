@@ -42,7 +42,7 @@ const CanvasWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       >
         <Canvas
           style={{ width: '100%', height: '100%' }}
-          camera={{ fov: 75, near: 0.1, position: [0, 0, 30] }}
+          camera={{ fov: 75, near: 0.1, position: [0, 0, 7] }}
           dpr={Math.min(window.devicePixelRatio, 2)}
         >
           {children}

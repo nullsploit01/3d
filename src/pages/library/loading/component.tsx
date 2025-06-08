@@ -2,7 +2,7 @@ import fragmentShader from './shaders/fragment.glsl';
 import vertexShader from './shaders/vertex.glsl';
 import { useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { DoubleSide, type Mesh, ShaderMaterial, Uniform } from 'three';
 
 import { useGuiControls } from '@/hooks/use-gui-controls';
@@ -31,10 +31,55 @@ const LoadingComponent = () => {
     }
   });
 
+  // useEffect(() => {
+  //   gltf.scene.traverse((child: any) => {
+  //     if (child.isMesh) {
+  //       child.material = new ShaderMaterial({
+  //         vertexShader,
+  //         fragmentShader,
+  //         uniforms: {
+  //           uColor: new Uniform([1.0, 0, 10.0]),
+  //         },
+  //         side: DoubleSide,
+  //       });
+  //     }
+  //   });
+  // }, [gltf.scene]);
+
   return (
     <>
-      <ambientLight intensity={20} />
-      <primitive object={gltf.scene} scale={7.5} />
+      <mesh ref={meshRef} position={[0, 2.5, 0]}>
+        <icosahedronGeometry args={[0.1, 2]} />
+      </mesh>
+      <mesh position={[3, 0, 0]}>
+        <torusKnotGeometry args={[0.6, 0.25, 128, 32]} />
+        <shaderMaterial
+          fragmentShader={fragmentShader}
+          vertexShader={vertexShader}
+          side={DoubleSide}
+          uniforms={{ uColor: new Uniform([10, 1, 1]) }}
+        />
+      </mesh>
+      <mesh position={[0, 0, 0]}>
+        <torusKnotGeometry args={[0.6, 0.25, 128, 32]} />
+        <shaderMaterial
+          fragmentShader={fragmentShader}
+          vertexShader={vertexShader}
+          side={DoubleSide}
+          uniforms={{ uColor: new Uniform([10, 1, 1]) }}
+        />
+      </mesh>
+      <mesh position={[-3, 0, 0]}>
+        <torusKnotGeometry args={[0.6, 0.25, 128, 32]} />
+        <shaderMaterial
+          fragmentShader={fragmentShader}
+          vertexShader={vertexShader}
+          side={DoubleSide}
+          uniforms={{ uColor: new Uniform([10, 1, 1]) }}
+        />
+      </mesh>
+      {/* <primitive object={gltf.scene} scale={7.5} /> */}
+      {/* <ambientLight intensity={10} /> */}
     </>
   );
 };
