@@ -24,7 +24,7 @@ const LoadingComponent = () => {
     vertexShader,
   });
 
-  useFrame(() => {
+  useFrame((state) => {
     if (lightShaderMaterial.uniforms.uLightColor) {
       lightShaderMaterial.uniforms.uLightColor.value = new Color(params.lightColor);
     }
@@ -32,9 +32,13 @@ const LoadingComponent = () => {
     if (lightModel.scene) {
       lightModel.scene.traverse((child: any) => {
         if (child.isMesh) {
+          const t = state.clock.getElapsedTime();
           const mesh = child;
           if (mesh.material && 'color' in mesh.material) {
             mesh.material.color = new Color(params.lightColor);
+            mesh.position.x = Math.sin(t) * 0.3;
+            mesh.position.y = Math.cos(t) * 0.3;
+            // mesh.position.z = Math.tan(t) * 0.3;
           }
         }
       });
