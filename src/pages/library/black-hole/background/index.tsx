@@ -1,7 +1,18 @@
-import { useMemo } from 'react';
-import { AdditiveBlending, BufferAttribute } from 'three';
+import starFragmentShader from './shaders/fragment.glsl';
+import starVertexShader from './shaders/vertex.glsl';
+import { useFrame } from '@react-three/fiber';
+import { useMemo, useRef } from 'react';
+import { AdditiveBlending, BufferAttribute, ShaderMaterial } from 'three';
 
 const BlackHoleBackground = () => {
+  const materialsRef = useRef<ShaderMaterial>(null);
+
+  useFrame(({ clock }) => {
+    if (materialsRef.current) {
+      materialsRef.current.uniforms.uTime.value = clock.getElapsedTime();
+    }
+  });
+
   const createStars = (count: number, distance: number) => {
     const positions = new Float32Array(count * 3);
     const scales = new Float32Array(count);
@@ -28,7 +39,7 @@ const BlackHoleBackground = () => {
   };
 
   const stars = useMemo(() => {
-    return createStars(1500, 1500);
+    return createStars(5500, 150);
   }, []);
 
   return (
@@ -36,14 +47,24 @@ const BlackHoleBackground = () => {
       <points>
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[stars.bufferAttribute.array, 3]} />
+          <bufferAttribute attach="attributes-aScale" args={[stars.scalesAttribute.array, 1]} />
+          <bufferAttribute attach="attributes-aPhase" args={[stars.phasesAttribute.array, 1]} />
+          <bufferAttribute
+            attach="attributes-aTwinkleFactor"
+            args={[stars.twinkleFactorsAttribute.array, 1]}
+          />
         </bufferGeometry>
-        <pointsMaterial
-          size={1}
-          sizeAttenuation={true}
-          depthTest={false}
-          opacity={0.5}
-          color="#ffffff"
+        <shaderMaterial
+          ref={materialsRef}
+          fragmentShader={starFragmentShader}
+          vertexShader={starVertexShader}
+          uniforms={{
+            uSize: { value: 20 * Math.min(window.devicePixelRatio, 2) },
+            uTime: { value: 0 },
+          }}
           transparent
+          opacity={0.5}
+          depthTest={false}
           depthWrite={false}
           blending={AdditiveBlending}
         />
