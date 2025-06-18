@@ -6,6 +6,7 @@ import Library from '@/pages/library';
 import LibraryHome from '@/pages/library/home';
 
 const LightShader = lazy(() => import('@/pages/library/light-shader'));
+const BlackHole = lazy(() => import('@/pages/library/black-hole'));
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
       {
         path: 'light-shaders',
         element: <LightShader />,
+      },
+      {
+        path: 'black-hole',
+        element: <BlackHole />,
       },
     ],
   },

@@ -19,6 +19,11 @@ const menuItems = [
     url: '/library/light-shaders',
     icon: Expand,
   },
+  {
+    title: 'Black Hole',
+    url: '/library/black-hole',
+    icon: Expand,
+  },
 ];
 
 export function AppSidebar() {
